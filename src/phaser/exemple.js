@@ -33,6 +33,7 @@ function preload() {
 }
 let player = ''
 let stars = ''
+let cursors =" "
 function create() {
   //Initialisation
   this.add.image(400, 300, 'sky')
@@ -47,10 +48,12 @@ function create() {
   player = this.physics.add.sprite(100, 450, 'dude')
 
   player.setBounce(0.2)
+  player.setScale(0.2)
   player.setCollideWorldBounds(false)
   player.body.setGravityY(300)
   this.physics.add.collider(player, platforms)
 
+  cursors = this.input.keyboard.createCursorKeys()
   this.anims.create({
     key: 'left',
     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -78,7 +81,7 @@ function create() {
 
   stars.children.iterate(function (child) {
 
-    child.setBounceY(Phaser.Math.FloatBetween(0.5, 0.5));
+    child.setBounceY(Phaser.Math.FloatBetween(0.1, 0.8));
 
   })
   this.physics.add.collider(stars, platforms)
@@ -125,7 +128,7 @@ function create() {
 
 function update() {
   // Reendu en boucle
-  let cursors = this.input.keyboard.createCursorKeys()
+ 
   player.angle=0
   if (cursors.left.isDown) {
     player.setVelocityX(-160);
