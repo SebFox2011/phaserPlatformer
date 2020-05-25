@@ -7,8 +7,8 @@ export const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 300 },
-      debug: false
+      gravity: { y:300 },
+      debug: true
     }
   },
   scene: {
@@ -19,6 +19,9 @@ export const config = {
 }
 let score = 0
 let scoreText = ''
+let player = ''
+let stars = ''
+let cursors =" "
 
 function preload() {
   // chargement
@@ -28,12 +31,9 @@ function preload() {
   this.load.image('bomb', 'assets/bomb.png')
   this.load.spritesheet('dude','assets/dude.png',
     { frameWidth: 32, frameHeight: 48 }
-  );
-
+  )
 }
-let player = ''
-let stars = ''
-let cursors =" "
+
 function create() {
   //Initialisation
   this.add.image(400, 300, 'sky')
@@ -46,9 +46,8 @@ function create() {
   platforms.create(750, 220, 'ground')
 
   player = this.physics.add.sprite(100, 450, 'dude')
-
   player.setBounce(0.2)
-  player.setScale(0.2)
+  player.setScale(1)
   player.setCollideWorldBounds(false)
   player.body.setGravityY(300)
   this.physics.add.collider(player, platforms)
@@ -127,7 +126,7 @@ function create() {
 }
 
 function update() {
-  // Reendu en boucle
+  // Rendu en boucle
  
   player.angle=0
   if (cursors.left.isDown) {
@@ -154,5 +153,5 @@ function update() {
 
 }
 
-export const game = new Phaser.Game(config)
+export const exemple = new Phaser.Game(config)
 
