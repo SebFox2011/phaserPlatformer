@@ -49,6 +49,7 @@ export const config = {
   }
 }
 function preload() {
+  console.log('Fonction preload')
   // chargement des images 
   this.load.image('tile1', './assets/tile1.png')
   this.load.image('tile2', './assets/tile2.png')
@@ -98,6 +99,7 @@ function preload() {
 }
 
 function create() {
+  console.log('Fonction create')
   cursors = this.input.keyboard.createCursorKeys()
   let platforms = this.physics.add.staticGroup()
 
@@ -176,6 +178,7 @@ function create() {
 }
 
 function update() {
+  console.log('Fonction update')
   // Rendu en boucle
   player.setVelocityX(0)
   player.setGravityY(1000)
