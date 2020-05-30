@@ -50,6 +50,7 @@ export const config = {
 }
 function preload() {
   console.log('Fonction preload')
+  console.log(this)
   // chargement des images 
   this.load.image('tile1', './assets/tile1.png')
   this.load.image('tile2', './assets/tile2.png')
