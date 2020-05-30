@@ -177,7 +177,7 @@ function create() {
 
 }
 
-function update() {
+function update(time,delta) {
   console.log('Fonction update')
   // Rendu en boucle
   player.setVelocityX(0)
