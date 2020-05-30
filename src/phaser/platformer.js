@@ -144,13 +144,15 @@ function create() {
     repeat: -1
   })
   
-  let coin = this.add.sprite(50, 50, 'tilec')
+
   this.anims.create({
     key: 'turn',
     frames: this.anims.generateFrameNumbers('tilec', { start: 0, end: 3 }),
     frameRate: 10,
     repeat: -1
   })
+  this.add.sprite(50, 50, 'tilec').play('turn')
+
 
   //Initialisation
   let x = 0
@@ -170,33 +172,72 @@ function create() {
     x = 0
   }
 
-  player = this.physics.add.sprite(30, 30, 'idle1').play('playerIdle')
+  player = this.physics.add.sprite(30, 30, 'idle1').play('playerIdle').setInteractive()
+  player.on('pointerdown', () => console.log('Player cliqué'))
+  player.on('pointerup', () => console.log('Player relaché'))
+  player.on('pointerout', () => console.log('Player plus sous control'))
   player.body.collideWorldBounds=true
   this.physics.add.collider(player, platforms)
-
-  coin.play('turn')
-
 }
+
+let isLeftDown = false
+let isRightDown = false
 
 function update(time,delta) {
   console.log('Fonction update')
   // Rendu en boucle
-  player.setVelocityX(0)
-  player.setGravityY(1000)
+  //player.setVelocityX(0)
+  //player.setGravityY(1000)
+
+  if (isRightDown)
+  {
+    player.play('playerRun',true)
+  } else if (isLeftDown) 
+  {
+    player.play('playerRun',true)
+  } 
+  else 
+  {
+    player.play('playerIdle',true)
+  }
+
   if (cursors.up.isDown){
     player.setVelocity(0,-300)
   }
 
   if (cursors.down.isDown){
+    console.log(time)
   }
 
   if (cursors.right.isDown){
-    player.setVelocity(50,0)
-    player.play('playerRun')
+    player.setFlip(false,false)
+    isRightDown = true
+    //player.setVelocity(50,0)
+    player.x += 1
+    
+  }
+  if (cursors.right.isUp){
+    isRightDown = false
   }
 
   if (cursors.left.isDown){
-    player.setVelocity(-50,0)
+    player.setFlip(true,false)
+    isLeftDown = true
+    //player.setVelocity(-50,0)
+    player.x += -1
+  }
+  if (cursors.left.isUp){
+    isLeftDown = false
+  }
+
+  if (cursors.left.isDown && cursors.up.isDown){
+    player.x += -1
+    player.y += -1
+  }
+
+  if (cursors.right.isDown && cursors.up.isDown){
+    player.x += 1
+    player.y += 1
   }
 }
 
