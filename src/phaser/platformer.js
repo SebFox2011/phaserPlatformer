@@ -206,7 +206,7 @@ function create() {
   player.on('pointerout', () => console.log('Player plus sous control'))
   player.body.collideWorldBounds=true
   this.physics.add.collider(player, platforms)
-  let pnj =  this.add.sprite(70, 70, 'walk0').play('turn').play('pnjRun')
+  let pnj =  this.physics.add.sprite(70, 70, 'walk0').play('turn').play('pnjRun')
   pnj.flipX = false
   this.tweens.add ({
     targets:pnj,
@@ -219,8 +219,9 @@ function create() {
     onYoyo:(()=> pnj.flipX = !pnj.flipX),
     onRepeat:(()=> pnj.flipX = !pnj.flipX)
   })
+ this.physics.add.collider(pnj, platforms)
+  this.physics.add.collider(player, pnj)
 }
-
 let isLeftDown = false
 let isRightDown = false
 
