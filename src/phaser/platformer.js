@@ -219,8 +219,11 @@ function create() {
     onYoyo:(()=> pnj.flipX = !pnj.flipX),
     onRepeat:(()=> pnj.flipX = !pnj.flipX)
   })
- this.physics.add.collider(pnj, platforms)
-  this.physics.add.collider(player, pnj)
+  this.physics.add.collider(pnj, platforms)
+  this.physics.add.overlap(player, pnj, collide, null, this)
+}
+const collide =  () => {
+  console.log('collide')
 }
 let isLeftDown = false
 let isRightDown = false
