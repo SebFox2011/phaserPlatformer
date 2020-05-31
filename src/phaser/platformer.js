@@ -95,7 +95,12 @@ function preload() {
     this.load.image('jump','./assets/player/jump.png')
   // Chargement 
   this.load.image('tile@','./assets/pnj/walk0.png')
-
+  this.load.image('walk0','./assets/pnj/walk0.png')
+  this.load.image('walk1','./assets/pnj/walk1.png')
+  this.load.image('walk2','./assets/pnj/walk2.png')
+  this.load.image('walk3','./assets/pnj/walk3.png')
+  this.load.image('walk4','./assets/pnj/walk4.png')
+  this.load.image('walk5','./assets/pnj/walk5.png')
   
 }
 
@@ -143,6 +148,20 @@ function create() {
     frameRate: 10,
     repeat: -1
   })
+
+  this.anims.create({
+    key: 'pnjRun',
+    frames: [
+        { key: 'walk0' },
+        { key: 'walk1' },
+        { key: 'walk2' },
+        { key: 'walk3' },
+        { key: 'walk4' },
+        { key: 'walk5' }
+    ],
+    frameRate: 10,
+    repeat: -1
+  })
   
 
   this.anims.create({
@@ -178,6 +197,7 @@ function create() {
   player.on('pointerout', () => console.log('Player plus sous control'))
   player.body.collideWorldBounds=true
   this.physics.add.collider(player, platforms)
+  this.add.sprite(70, 70, 'walk0').play('turn').play('pnjRun')
 }
 
 let isLeftDown = false
