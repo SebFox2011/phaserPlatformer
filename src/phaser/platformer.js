@@ -29,12 +29,13 @@ console.log(heightScreen)
 
 let cursors = ''
 let player = ''
+let isReadyToDrop = true
 
 export const config = {
   type: Phaser.AUTO,
   width: widthScreen,
   height: heightScreen,
-  backgroundColor: 0xEEEEEE,
+  backgroundColor: 0xEEE0EE,
   physics: {
     default: 'arcade',
     arcade: {
@@ -102,10 +103,18 @@ function preload() {
   this.load.image('walk4','./assets/pnj/walk4.png')
   this.load.image('walk5','./assets/pnj/walk5.png')
   
+  // Chargement des audios
+  this.load.audio('drop','./assets/drop_001.ogg')
 }
 
 function create() {
   console.log('Fonction create')
+
+  let fontText = {
+    fontSize: '20px',
+    color: '#ff0000'
+  }
+  this.add.text(20,10,'Let \'s play !',fontText)
   cursors = this.input.keyboard.createCursorKeys()
   let platforms = this.physics.add.staticGroup()
 
@@ -197,7 +206,19 @@ function create() {
   player.on('pointerout', () => console.log('Player plus sous control'))
   player.body.collideWorldBounds=true
   this.physics.add.collider(player, platforms)
-  this.add.sprite(70, 70, 'walk0').play('turn').play('pnjRun')
+  let pnj =  this.add.sprite(70, 70, 'walk0').play('turn').play('pnjRun')
+  pnj.flipX = false
+  this.tweens.add ({
+    targets:pnj,
+    x: pnj.x + 100,
+    ease: 'linear',// 'Cubic', 'Elastic', 'Bounce', 'Back'
+    duration:1000,
+    repeat:-1,
+    yoyo:true,
+    onStart: (() => {}),
+    onYoyo:(()=> pnj.flipX = !pnj.flipX),
+    onRepeat:(()=> pnj.flipX = !pnj.flipX)
+  })
 }
 
 let isLeftDown = false
@@ -221,8 +242,14 @@ function update(time,delta) {
     player.play('playerIdle',true)
   }
 
-  if (cursors.up.isDown){
+  if (cursors.up.isDown && isReadyToDrop ){
+    isReadyToDrop = false
+    this.sound.play('drop')
     player.setVelocity(0,-300)
+    
+  }
+  if (cursors.up.isUp){
+    isReadyToDrop = true
   }
 
   if (cursors.down.isDown){
