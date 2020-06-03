@@ -29,6 +29,7 @@ console.log(heightScreen)
 
 let cursors = ''
 let player = ''
+let pnj = ''
 let isReadyToDrop = true
 
 export const config = {
@@ -206,7 +207,7 @@ function create() {
   player.on('pointerout', () => console.log('Player plus sous control'))
   player.body.collideWorldBounds=true
   this.physics.add.collider(player, platforms)
-  let pnj =  this.physics.add.sprite(70, 70, 'walk0').play('turn').play('pnjRun')
+  pnj =  this.physics.add.sprite(70, 50, 'walk0').play('turn').play('pnjRun').setScale(2)
   pnj.flipX = false
   this.tweens.add ({
     targets:pnj,
@@ -223,10 +224,18 @@ function create() {
   this.physics.add.overlap(player, pnj, collide, null, this)
 }
 const collide =  () => {
-  console.log('collide')
+  if (isJumping)
+  {
+    pnj.destroy()
+  }
+  else
+  {
+    console.log('player mort')
+  }
 }
 let isLeftDown = false
 let isRightDown = false
+let isJumping = false
 
 function update(time,delta) {
   console.log('Fonction update')
@@ -245,11 +254,16 @@ function update(time,delta) {
   {
     player.play('playerIdle',true)
   }
+  if(player.body.onFloor())
+  {
+    isJumping = false
+  }
 
-  if (cursors.up.isDown && isReadyToDrop ){
+  if (cursors.up.isDown && isReadyToDrop && player.body.onFloor()){
     isReadyToDrop = false
     this.sound.play('drop')
-    player.setVelocity(0,-300)
+    player.setVelocity(0,-200)
+    isJumping = true
     
   }
   if (cursors.up.isUp){
